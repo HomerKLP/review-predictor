@@ -1,0 +1,39 @@
+version: '2.4'
+
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+    container_name: review-predictor
+    mem_limit: 1g
+    restart: unless-stopped
+    volumes:
+      - ./logs:/usr/src/app/logs
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:12.4
+    restart: unless-stopped
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB:  ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - pgdata:/usr/src/app/logs
+
+  migration:
+    build: .
+    command: python manage.py migrate --noinput
+    container_name: migration
+    depends_on:
+      - db
+      - web
+
+volumes:
+  pgdata:
+    driver: local
