@@ -2,7 +2,7 @@
 from rest_framework import serializers
 # Local
 from .models import Review
-from .reviews_model.reviews import predict_rating
+from review_predictor.app.reviews import predict_rating
 
 
 class ReviewSerializer(serializers.ModelSerializer):
