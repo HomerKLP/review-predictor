@@ -1,3 +1,7 @@
+# Vendor
 from django.contrib import admin
+# Local
+from .models import Review
 
-# Register your models here.
+
+admin.site.register(Review)
